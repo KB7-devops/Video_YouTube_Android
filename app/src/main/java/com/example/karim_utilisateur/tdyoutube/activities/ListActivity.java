@@ -2,15 +2,12 @@ package com.example.karim_utilisateur.tdyoutube.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -19,17 +16,15 @@ import com.android.volley.toolbox.Volley;
 import com.example.karim_utilisateur.tdyoutube.Constants;
 import com.example.karim_utilisateur.tdyoutube.R;
 import com.example.karim_utilisateur.tdyoutube.adapters.ListAdapter;
-import com.example.karim_utilisateur.tdyoutube.models.Default;
+import com.example.karim_utilisateur.tdyoutube.interfaces.OnItemSelectedListener;
 import com.example.karim_utilisateur.tdyoutube.models.Example;
 import com.example.karim_utilisateur.tdyoutube.models.Item;
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements OnItemSelectedListener {
 
     private static final String SEARCH = "SEARCH"; //q
     private static final String SEARCH_URL = "https://www.googleapis.com/youtube/v3/search?part=snippet";
@@ -64,8 +59,9 @@ public class ListActivity extends AppCompatActivity {
                 //    parse data from webservice to get Research as Java object
                Example example = new Gson().fromJson(response, Example.class);
                 setAdapter(example.getItems());
-                Log.d("test","icii oib esrt bon");
-                Log.d("testagain",example.getItems().size()+"");
+
+
+   //             Log.d("testagain",example.getItems().size()+"");
 
 //                for(int i = 0; i < example.getItems().size(); i++){
 //                    Toast.makeText(getApplicationContext(),example.getItems().get(i).getSnippet().getTitle(),Toast.LENGTH_LONG)
@@ -88,8 +84,13 @@ public class ListActivity extends AppCompatActivity {
     private void setAdapter(List<Item> items) {
         ListAdapter adapter = new ListAdapter(items);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemSelectedListener(this);
     }
 
+    @Override
+    public void onItemSelected(Item video) {
+       VideoYoutubeActivity.start(this, video.getId().getVideoId());
+    }
 
 
 }

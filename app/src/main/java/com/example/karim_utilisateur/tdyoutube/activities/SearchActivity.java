@@ -32,6 +32,6 @@ public class SearchActivity extends AppCompatActivity implements OnSearchSelecte
 
     @Override
     public void onSearchSelected(View view) {
-        ListActivity.start(this, search.getText().toString());
+        ListActivity.start(this, search.getText().toString().replace(' ','+'));
     }
 }

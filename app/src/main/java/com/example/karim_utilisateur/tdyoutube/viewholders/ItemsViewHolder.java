@@ -7,8 +7,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.karim_utilisateur.tdyoutube.R;
+import com.example.karim_utilisateur.tdyoutube.activities.ListActivity;
+import com.example.karim_utilisateur.tdyoutube.activities.VideoYoutubeActivity;
+import com.example.karim_utilisateur.tdyoutube.interfaces.OnItemSelectedListener;
 import com.example.karim_utilisateur.tdyoutube.models.Default;
 import com.example.karim_utilisateur.tdyoutube.models.Example;
+import com.example.karim_utilisateur.tdyoutube.models.Id;
 import com.example.karim_utilisateur.tdyoutube.models.Item;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +24,8 @@ public class ItemsViewHolder extends RecyclerView.ViewHolder {
     private TextView title, channelTitle;
     private ImageView image;
     private Context context;
+    private OnItemSelectedListener onItemSelectedListener;
+
 
     public ItemsViewHolder(View itemView) {
         super(itemView);
@@ -32,6 +38,17 @@ public class ItemsViewHolder extends RecyclerView.ViewHolder {
     public void bind(final Item item) {
         title.setText( item.getSnippet().getTitle());
         channelTitle.setText( item.getSnippet().getChannelTitle());
+//        item.getId().getVideoId();
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemSelectedListener == null) {
+                 return;
+                }
+                VideoYoutubeActivity.start(context, item.getId().getVideoId());
+                onItemSelectedListener.onItemSelected(item);
+            }
+        });
         Picasso.with(context)
                 .load(item.getSnippet().getThumbnails().getMedium().getUrl())
                 .resize(item.getSnippet().getThumbnails().getMedium().getWidth(),item.getSnippet().getThumbnails().getMedium().getHeight())
@@ -40,4 +57,7 @@ public class ItemsViewHolder extends RecyclerView.ViewHolder {
     }
 
 
+    public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {
+        this.onItemSelectedListener = onItemSelectedListener;
+    }
 }

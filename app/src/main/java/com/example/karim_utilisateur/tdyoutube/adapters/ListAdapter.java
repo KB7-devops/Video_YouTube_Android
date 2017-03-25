@@ -6,11 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.karim_utilisateur.tdyoutube.R;
-import com.example.karim_utilisateur.tdyoutube.models.Default;
-import com.example.karim_utilisateur.tdyoutube.models.Example;
-import com.example.karim_utilisateur.tdyoutube.models.Examples;
+import com.example.karim_utilisateur.tdyoutube.interfaces.OnItemSelectedListener;
 import com.example.karim_utilisateur.tdyoutube.models.Item;
-import com.example.karim_utilisateur.tdyoutube.models.Items;
 import com.example.karim_utilisateur.tdyoutube.viewholders.ItemsViewHolder;
 
 import java.util.List;
@@ -21,17 +18,13 @@ import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ItemsViewHolder> {
     private final List<Item> items;
-   // private final List<Default> defaults;
+    private OnItemSelectedListener onItemSelectedListener;
+
 
     public ListAdapter(List<Item> items) {
         this.items = items;
     }
-/*
-    public ListAdapter(List<Item> items, List<Default> defaults) {
-        this.items = items;
-        this.defaults = defaults;
-    }
-*/
+
 
     @Override
     public ItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,11 +34,16 @@ public class ListAdapter extends RecyclerView.Adapter<ItemsViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemsViewHolder holder, int position) {
+       holder.setOnItemSelectedListener(onItemSelectedListener);
         holder.bind(items.get(position));
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 }
